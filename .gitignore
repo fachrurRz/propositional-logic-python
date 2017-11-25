@@ -6,7 +6,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# C extensions
+
 *.so
 
 # Distribution / packaging
@@ -109,3 +109,4 @@ venv.bak/
 .idea/misc.xml
 .idea/modules.xml
 .idea/workspace.xml
+.idea/
