@@ -28,14 +28,17 @@ def get_subformula(formula):
 
     for f in sub_formulas:
         print(f)
+    return len(sub_formulas)
 
 
 # main
 
 if __name__ == "__main__":
-    string_formula = '((( P2 -> P1 ) | ~ P2 ) <-> P2 )'
+    string_formula = '~(( P2 -> P4 ) -> ( P3 & P4 ))'
     formula = LogicFormula(string_formula)
 
     # sub formula
-    get_subformula(formula)
+    len_subformula = get_subformula(formula)
+    print(str(string_formula) + ' has ' + str(len_subformula - 1) + ' different subformulas')
+
     formula.generate_evaluation_table()
