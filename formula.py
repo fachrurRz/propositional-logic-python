@@ -1,5 +1,8 @@
 from operators import *
-
+import sys
+#
+# sys.stdout.write('hi there')
+# sys.stdout.write('Bob here.')
 
 class Variable:
     def parse(input_string):
@@ -13,7 +16,7 @@ class Variable:
                 break
         if consumed == 0:
             raise Exception("Not a valid input string")
-        return Variable(name), input_string[consumed:]
+        return (Variable(name), input_string[consumed:])
 
     def __init__(self, name):
         self.name = name
@@ -161,6 +164,58 @@ class LogicFormula:
             output.append("{} -> {}".format(ident, ident * 3))
             output.extend(self._node_graph(node.operand, ident * 3))
         return output
+
+    def generate_evaluation_table(self):
+        formatString = "{{:0{}b}}: {{}}".format(len(self.variables))
+        results = self.evaluate_all()
+        # if all(results.values()):
+        #     print("Formula is a tautology")
+        # elif any(results.values()):
+        #     print("Formula is satisfiable")
+        # else:
+        #     print("Formula is a contradiction")
+        for x in self.variables:
+            if isinstance(x, Variable):
+                sys.stdout.write(str(x) + '   ')
+        sys.stdout.write('F \n')
+
+        for k, v in results.items():
+            to_print = formatString.format(k, v)
+            flag = False
+            for c in to_print:
+                if c.isalnum():
+                    if flag:
+                        if c == 'F':
+                            sys.stdout.write('0')
+                        else:
+                            sys.stdout.write('1')
+                        sys.stdout.write('\n')
+                        break;
+                    sys.stdout.write(c + '    ')
+                else:
+                    flag = True
+
+    def evaluate_all(self):
+        evaluation_results = {}
+        for i in range(0, 2 ** len(self.variables)):
+            evaluation_results[i] = self.evaluate_with_bitset(i)
+        return evaluation_results
+
+    def evaluate_with_bitset(self, bitset):
+        values = []
+        bitset += 2 ** len(self.variables)
+        while bitset != 1:
+            values.append(bitset % 2 == True)
+            bitset //= 2
+        values.reverse()
+        return self.evaluate_with_values(values)
+
+    def evaluate_with_values(self, values):
+        if len(values) != len(self.variables):
+            raise Exception("Incorrect variable value count when evaluating.")
+        for (i, value) in enumerate(values):
+            self.variables[i].value = value
+        return self.evaluate()
 
     def infix(self):
         return "({})".format(self.root.infix())

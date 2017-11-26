@@ -15,12 +15,12 @@ class UnaryOperator(Operator):
         self.operand = None
 
     def infix(self):
-        return "({}{})".format(self.kind, self.operand.infix())
+        return "{}{}".format(self.kind, self.operand.infix())
 
 
 class NegationOperator(UnaryOperator):
     def __init__(self):
-        super().__init__("-")
+        super().__init__("~")
 
     def precedence(self):
         return 0
@@ -70,6 +70,9 @@ class ImplicationOperator(BinaryOperator):
 
     def evaluate(self):
         return not self.left.evaluate() or self.right.evaluate()
+
+    def infix(self):
+        return "({} {} {} {})".format('~', self.left.infix(), '|', self.right.infix())
 
 class BiimplicationOperator(BinaryOperator):
     def __init__(self):
