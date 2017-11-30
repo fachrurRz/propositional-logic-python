@@ -86,7 +86,10 @@ class BiimplicationOperator(BinaryOperator):
         right = not self.left.evaluate() and not self.right.evaluate()
         return left or right
 
-
+    def infix(self):
+        return "({} {} {} {} {} {} {} {} {} {} {} {} {})".\
+            format('(', '~', self.left.infix(), '|', self.right.infix(), ')', '&',
+                   '(', '~', self.right.infix(), '|', self.left.infix(), ')')
 
 class EquivalenceOperator(BinaryOperator):
     def __init__(self):

@@ -221,4 +221,6 @@ class LogicFormula:
         return "({})".format(self.root.infix())
 
     def get_tree(self):
+        string_formula = self.infix()
+        self.__init__(string_formula)
         return self.root

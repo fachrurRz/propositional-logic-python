@@ -20,8 +20,7 @@ def tree(node, arr):
 
 
 def get_subformula(formula):
-    formula2 = LogicFormula(formula.infix())
-    root = formula2.get_tree()
+    root = formula.get_tree()
     sub_formulas = []
 
     tree(root, sub_formulas)
@@ -34,7 +33,7 @@ def get_subformula(formula):
 # main
 
 if __name__ == "__main__":
-    string_formula = '~(( P2 -> P4 ) -> ( P3 & P4 ))'
+    string_formula = 'p<->q'
     formula = LogicFormula(string_formula)
 
     # sub formula
